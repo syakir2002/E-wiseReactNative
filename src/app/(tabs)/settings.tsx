@@ -1,3 +1,4 @@
+import { posthog } from "@/lib/posthog";
 import { useClerk } from "@clerk/expo";
 import { useState } from "react";
 import { ActivityIndicator, Pressable, Text, View } from "react-native";
@@ -16,6 +17,10 @@ const Settings = () => {
     setErrorMessage("");
 
     try {
+      posthog?.capture("user_signed_out");
+      posthog?.logger.info("authentication sign-out requested", {
+        auth_flow: "sign_out",
+      });
       await signOut({ redirectUrl: "/sign-in" });
     } catch (error) {
       setErrorMessage(

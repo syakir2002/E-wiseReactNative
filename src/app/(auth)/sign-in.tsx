@@ -1,5 +1,6 @@
 import AuthInput from "@/component/AuthInput";
 import AuthScreen from "@/component/AuthScreen";
+import { posthog } from "@/lib/posthog";
 import { useSignIn } from "@clerk/expo";
 import clsx from "clsx";
 import { Link, router, type Href } from "expo-router";
@@ -23,6 +24,11 @@ export default function SignInScreen() {
           setMessage("Complete the required account step before continuing.");
           return;
         }
+
+        posthog?.capture("user_signed_in");
+        posthog?.logger.info("authentication sign-in completed", {
+          auth_flow: "sign_in",
+        });
 
         const url = decorateUrl("/");
         if (url.startsWith("http") && typeof window !== "undefined") {
