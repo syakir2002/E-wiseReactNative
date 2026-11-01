@@ -1,8 +1,8 @@
 import { Tabs } from "expo-router";
-import { data } from "../../../constants/data";
-import { colors, components } from "../../../constants/theme";
 import { Image, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { tabs } from "@/constants/data";
+import { colors, components } from "@/constants/theme";
 
 const tabBar = components.tabBar;
 
@@ -60,7 +60,7 @@ const TabLayout = () => {
         },
       }}
     >
-      {data.map((tab) => (
+      {tabs.map((tab) => (
         <Tabs.Screen
           key={tab.name}
           name={tab.name}

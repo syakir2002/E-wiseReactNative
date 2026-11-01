@@ -33,15 +33,54 @@
           "imageWidth": 76
         }
       ],
-      ["expo-font", { "fonts": [ 
-        "./assets/fonts/PlusJakartaSanas-Regular.ttf",
-        "./assets/fonts/PlusJakartaSanas-Bold.ttf",
-        "./assets/fonts/PlusJakartaSanas-SemiBold.ttf",
-        "./assets/fonts/PlusJakartaSanas-Medium.ttf",
-        "./assets/fonts/PlusJakartaSanas-ExtraBold.ttf",
-        "./assets/fonts/PlusJakartaSanas-Light.ttf"
-
-        ] }]
+      [
+        "expo-font",
+        {
+          "android": {
+            "fonts": [
+              {
+                "fontFamily": "Plus Jakarta Sans",
+                "fontDefinitions": [
+                  {
+                    "path": "./assets/fonts/PlusJakartaSans-Light.ttf",
+                    "weight": 300
+                  },
+                  {
+                    "path": "./assets/fonts/PlusJakartaSans-Regular.ttf",
+                    "weight": 400
+                  },
+                  {
+                    "path": "./assets/fonts/PlusJakartaSans-Medium.ttf",
+                    "weight": 500
+                  },
+                  {
+                    "path": "./assets/fonts/PlusJakartaSans-SemiBold.ttf",
+                    "weight": 600
+                  },
+                  {
+                    "path": "./assets/fonts/PlusJakartaSans-Bold.ttf",
+                    "weight": 700
+                  },
+                  {
+                    "path": "./assets/fonts/PlusJakartaSans-ExtraBold.ttf",
+                    "weight": 800
+                  }
+                ]
+              }
+            ]
+          },
+          "ios": {
+            "fonts": [
+              "./assets/fonts/PlusJakartaSans-Light.ttf",
+              "./assets/fonts/PlusJakartaSans-Regular.ttf",
+              "./assets/fonts/PlusJakartaSans-Medium.ttf",
+              "./assets/fonts/PlusJakartaSans-SemiBold.ttf",
+              "./assets/fonts/PlusJakartaSans-Bold.ttf",
+              "./assets/fonts/PlusJakartaSans-ExtraBold.ttf"
+            ]
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
