@@ -28,7 +28,9 @@ export default function App() {
           <Image source={images.avatar} className="home-avatar" />
           <Text className="home-user-name">{HOME_USER.name}</Text>
         </View>
-        <Image source={icons.add} className="home-add-icon" />
+        <View className="home-add-button">
+          <Image source={icons.add} className="home-add-icon" />
+        </View>
       </View>
       <View className="home-balance-card">
         <Text className="home-balance-label">Balance</Text>

@@ -1,5 +1,6 @@
-import { Tabs } from "expo-router";
-import { Image, View } from "react-native";
+import { useAuth } from "@clerk/expo";
+import { Redirect, Tabs } from "expo-router";
+import { ActivityIndicator, Image, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { tabs } from "@/constants/data";
 import { colors, components } from "@/constants/theme";
@@ -7,7 +8,24 @@ import { colors, components } from "@/constants/theme";
 const tabBar = components.tabBar;
 
 const TabLayout = () => {
+  const { isLoaded, isSignedIn } = useAuth();
   const insets = useSafeAreaInsets();
+
+  if (!isLoaded) {
+    return (
+      <View className="flex-1 items-center justify-center bg-background">
+        <ActivityIndicator color={colors.accent} />
+        <Text style={{ color: colors.primary, marginTop: 12 }}>
+          Loading your account...
+        </Text>
+      </View>
+    );
+  }
+
+  if (!isSignedIn) {
+    return <Redirect href="/sign-in" />;
+  }
+
   const TabIcon = ({ focused, icon }: TabIconProps) => (
     <View
       style={{

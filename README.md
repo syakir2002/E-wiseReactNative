@@ -25,6 +25,18 @@ In the output, you'll find options to open the app in a
 
 You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
+## Clerk authentication
+
+1. Copy `.env.example` to `.env` and set `EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY` to the publishable key from your Clerk Dashboard.
+2. In Clerk, enable the Native API and email/password sign-up and sign-in. Enable email verification codes if you want to verify new accounts by email.
+3. Restart Expo with a clean cache:
+
+   ```bash
+   npx expo start -c
+   ```
+
+The sign-in and sign-up screens use Clerk, and the tab routes require an active session. Never put a Clerk secret key in an `EXPO_PUBLIC_` variable.
+
 ## Get a fresh project
 
 When you're ready, run:
