@@ -1,4 +1,5 @@
 import "@/global.css";
+import { SubscriptionsProvider } from "@/context/SubscriptionsContext";
 import { ClerkProvider, useAuth, useUser } from "@clerk/expo";
 import { tokenCache } from "@clerk/expo/token-cache";
 import { Stack, usePathname } from "expo-router";
@@ -71,11 +72,13 @@ export default function RootLayout() {
 
   return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-      {posthog ? (
-        <PostHogProvider client={posthog}>{content}</PostHogProvider>
-      ) : (
-        content
-      )}
+      <SubscriptionsProvider>
+        {posthog ? (
+          <PostHogProvider client={posthog}>{content}</PostHogProvider>
+        ) : (
+          content
+        )}
+      </SubscriptionsProvider>
     </ClerkProvider>
   );
 }

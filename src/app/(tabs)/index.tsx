@@ -3,35 +3,60 @@ import SubcriptionCard from "@/component/SubcriptionCard";
 import UpcomingSubscriptionCard from "@/component/UpCommingSubscriptionCard";
 import {
   HOME_BALANCE,
-  HOME_SUBSCRIPTIONS,
-  HOME_USER,
   UPCOMING_SUBSCRIPTIONS,
 } from "@/constants/data";
+import CreateSubscriptionModal from "@/component/CreateSubscriptionModal";
+import { useSubscriptions } from "@/context/SubscriptionsContext";
+import { useUser } from "@clerk/expo";
 import { icons } from "@/constants/icons";
 import images from "@/constants/images";
 import { formatCurrency } from "@/lib/utils";
 import dayjs from "dayjs";
 import { styled } from "nativewind";
 import { useState } from "react";
-import { FlatList, Image, Text, View } from "react-native";
+import { FlatList, Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
 
 const SafeAreaView = styled(RNSafeAreaView);
 
 export default function App() {
+  const { user } = useUser();
+  const {
+    subscriptions,
+    isLoaded,
+    loadError,
+    addSubscription,
+  } = useSubscriptions();
   const [expandedSubcriptionId, setExpandedSubcriptionId] = useState<string | null>(null);
+  const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
+
+  const userName =
+    user?.fullName || user?.firstName || user?.username || "there";
 
   const listHeader = (
     <>
       <View className="home-header">
         <View className="home-user">
-          <Image source={images.avatar} className="home-avatar" />
-          <Text className="home-user-name">{HOME_USER.name}</Text>
+          <Image
+            source={user?.imageUrl ? { uri: user.imageUrl } : images.avatar}
+            className="home-avatar"
+          />
+          <Text className="home-user-name">{userName}</Text>
         </View>
-        <View className="home-add-button">
+        <Pressable
+          accessibilityLabel="Create subscription"
+          accessibilityRole="button"
+          className="home-add-button"
+          onPress={() => setIsCreateModalVisible(true)}
+        >
           <Image source={icons.add} className="home-add-icon" />
-        </View>
+        </Pressable>
       </View>
+      {loadError ? (
+        <Text className="auth-error">
+          Could not load saved subscriptions: {loadError}
+        </Text>
+      ) : null}
       <View className="home-balance-card">
         <Text className="home-balance-label">Balance</Text>
         <View className="home-balance-row">
@@ -69,7 +94,7 @@ export default function App() {
       <FlatList
         className="flex-1"
         contentContainerStyle={{ paddingBottom: 120 }}
-        data={HOME_SUBSCRIPTIONS}
+        data={subscriptions}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <SubcriptionCard
@@ -89,6 +114,14 @@ export default function App() {
         ListEmptyComponent={
           <Text className="home-empty-state">No subscriptions yet</Text>
         }
+      />
+      <CreateSubscriptionModal
+        isReady={isLoaded && !loadError}
+        loadError={loadError}
+        onClose={() => setIsCreateModalVisible(false)}
+        onCreate={addSubscription}
+        onCreated={setExpandedSubcriptionId}
+        visible={isCreateModalVisible}
       />
     </SafeAreaView>
   );
