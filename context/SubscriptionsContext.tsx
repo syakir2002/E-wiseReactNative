@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { HOME_SUBSCRIPTIONS } from "@/constants/data";
 import { icons } from "@/constants/icons";
 import dayjs from "dayjs";
+import { posthog } from "@/lib/posthog";
 import {
   createContext,
   useCallback,
@@ -163,6 +164,12 @@ export function SubscriptionsProvider({
         JSON.stringify(persistedSubscriptions),
       );
       setCustomSubscriptions(updatedSubscriptions);
+      posthog?.capture("subscription_created", {
+        subscription_category: subscription.category ?? "Other",
+        subscription_frequency: subscription.billing,
+        subscription_name: subscription.name,
+        subscription_price: subscription.price,
+      });
 
       return subscription;
     },
